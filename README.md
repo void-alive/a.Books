@@ -1,8 +1,10 @@
-doit
+- doit
 
 doit 책에 있는 내용들 (html, css, js) 실습 및 책 마지막 장 예제 파일들 등록
 
-git practice
+
+
+- git practice
 
 팀 개발을 위한 git, github 따라하기
 
@@ -10,7 +12,9 @@ git practice
 
 의 예제들을 따라한 파일
 
-javaEssential
+
+
+- javaEssential
 
 명품 자바 에센셜
 
