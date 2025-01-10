@@ -1,4 +1,4 @@
-package com.example.jspboardmodel1;
+package com.example.jspmodel;
 
 import java.io.*;
 
