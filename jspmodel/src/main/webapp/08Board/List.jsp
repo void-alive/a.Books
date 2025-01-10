@@ -68,13 +68,18 @@
       virtualNum = totalCount--;
   %>
   <tr style="text-align: center;">
-    <td><%=virtualNum%></td>
-    <td style="text-align: left">
-      <a href="View.jsp?num=<%=dto.getNum()%>"><%=dto.getTitle()%></a>
+    <td><%=virtualNum%>
     </td>
-    <td style="text-align: center;"><%=dto.getId()%> </td>
-    <td style="text-align: center;"><%=dto.getVisitcount()%> </td>
-    <td style="text-align: center;"><%=dto.getPostdate()%> </td>
+    <td style="text-align: left">
+      <a href="View.jsp?num=<%=dto.getNum()%>"><%=dto.getTitle()%>
+      </a>
+    </td>
+    <td style="text-align: center;"><%=dto.getId()%>
+    </td>
+    <td style="text-align: center;"><%=dto.getVisitcount()%>
+    </td>
+    <td style="text-align: center;"><%=dto.getPostdate()%>
+    </td>
   </tr>
   <%
       }
@@ -82,5 +87,12 @@
   %>
 </table>
 <%--목록 하단의 글쓰기 버튼--%>
+<table style="border: 1px; width: 90%;">
+  <tr style="text-align: center">
+    <td>
+      <button type="button" onclick="location.href='Write.jsp';" >글쓰기</button>
+    </td>
+  </tr>
+</table>
 </body>
 </html>
