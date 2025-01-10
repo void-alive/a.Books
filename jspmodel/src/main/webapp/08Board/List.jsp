@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*" %>
-<%@ page import="com.example.jspmodel.BoardDAO" %>
-<%@ page import="com.example.jspmodel.BoardDTO" %>
+<%@ page import="asdf.BoardDAO" %>
+<%@ page import="asdf.BoardDTO" %>
 <%
   BoardDAO dao = new BoardDAO(application);
 
+  dao.dbOpen();
   Map<String, Object> param = new HashMap<String, Object>();
   String searchField = request.getParameter("searchField");
   String searchWord = request.getParameter("searchWord");
@@ -22,15 +23,27 @@
 <head>
   <meta charset="UTF-8">
   <title>List</title>
+  <style>
+    table{
+        border: 1px solid black;
+        width: 90%;
+    }
+    td{
+        text-align: center;
+    }
+    tr{
+        border: 1px solid black;
+    }
+  </style>
 </head>
 <body>
-<jsp:include page="List.jsp"></jsp:include>
 <h2>목록 보기(List)</h2>
+
 <%--검색용--%>
 <form method="get">
-  <table style="border :1px; width : 90%;">
+  <table>
     <tr>
-      <td style="text-align : center;">
+      <td>
         <select name="searchField">
           <option value="title">제목</option>
           <option value="content">내용</option>
@@ -41,8 +54,9 @@
     </tr>
   </table>
 </form>
+
 <%--게시물 목록 테이블(표)--%>
-<table style="border: 1px; width: 90%;">
+<table>
   <%--  각 컬럼의 이름--%>
   <tr>
     <th style="width:10%;">번호</th>
@@ -51,6 +65,7 @@
     <th style="width:10%;">조회수</th>
     <th style="width:15%;">작성일</th>
   </tr>
+
   <%--  목록의 내용 --%>
   <%
     if (boardLists.isEmpty()) {
@@ -90,7 +105,7 @@
 <table style="border: 1px; width: 90%;">
   <tr style="text-align: center">
     <td>
-      <button type="button" onclick="location.href='Write.jsp';" >글쓰기</button>
+      <button type="button" onclick="location.href='Write.jsp';">글쓰기</button>
     </td>
   </tr>
 </table>
