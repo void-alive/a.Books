@@ -5,7 +5,6 @@
 <%
   BoardDAO dao = new BoardDAO(application);
 
-  dao.dbOpen();
   Map<String, Object> param = new HashMap<String, Object>();
   String searchField = request.getParameter("searchField");
   String searchWord = request.getParameter("searchWord");
@@ -14,6 +13,7 @@
     param.put("searchWord", searchWord);
   }
 
+  dao.dbOpen();
   int totalCount = dao.selectCount(param);
   List<BoardDTO> boardLists = dao.selectList(param);
   dao.close();
@@ -23,20 +23,33 @@
 <head>
   <meta charset="UTF-8">
   <title>List</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+          crossorigin="anonymous"></script>
   <style>
-    table{
-        border: 1px solid black;
-        width: 90%;
-    }
-    td{
-        text-align: center;
-    }
-    tr{
-        border: 1px solid black;
-    }
+      table {
+          border: 1px solid black;
+          width: 90%;
+      }
+
+      td {
+          text-align: center;
+      }
+
+      tr {
+          border: 1px solid black;
+      }
   </style>
+  <script>
+    $(document).ready(function(){
+        $(".write").on("click",function(){
+            location.href = "Write.jsp";
+        });
+    });
+  </script>
 </head>
 <body>
+<jsp:include page="../Common/Link.jsp"></jsp:include>
+
 <h2>목록 보기(List)</h2>
 
 <%--검색용--%>
@@ -83,7 +96,8 @@
       virtualNum = totalCount--;
   %>
   <tr style="text-align: center;">
-    <td><%=virtualNum%>
+    <td>
+      <%=virtualNum%>
     </td>
     <td style="text-align: left">
       <a href="View.jsp?num=<%=dto.getNum()%>"><%=dto.getTitle()%>
@@ -105,7 +119,7 @@
 <table style="border: 1px; width: 90%;">
   <tr style="text-align: center">
     <td>
-      <button type="button" onclick="location.href='Write.jsp';">글쓰기</button>
+      <button type="button" class="write">글쓰기</button>
     </td>
   </tr>
 </table>

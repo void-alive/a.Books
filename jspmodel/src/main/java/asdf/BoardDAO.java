@@ -16,7 +16,7 @@ public class BoardDAO extends JDBConnect {
     String query = "SELECT COUNT(*) FROM jspboard2 ";
     if (map.get("searchWord") != null) {
       query += "WHERE " + map.get("searchField") + " ";
-      query += "LIKE '%'" + map.get("searchWord").toString() + "%' ";
+      query += "LIKE '%" + map.get("searchWord").toString() + "%' ";
     }
     try {
       stmt = con.createStatement();
@@ -37,7 +37,7 @@ public class BoardDAO extends JDBConnect {
     String query = "SELECT * FROM jspboard2 ";
     if (map.get("searchWord") != null) {
       query += "WHERE " + map.get("searchField") + " ";
-      query += "LIKE '%'" + map.get("searchWord").toString() + "%' ";
+      query += "LIKE '%" + map.get("searchWord").toString() + "%' ";
       query += "ORDER BY num DESC ";
 
       try{
@@ -62,5 +62,15 @@ public class BoardDAO extends JDBConnect {
       }
     }
     return bbs;
+  }
+
+//  게시글 데이터를 받아 db에 추가
+  public int insertWrite(BoardDTO DTO){
+    int result=0;
+    try{}
+    catch(Exception e){
+
+    }
+    return result;
   }
 }
