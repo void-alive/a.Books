@@ -30,7 +30,7 @@ public class BoardDAO extends JDBConnect {
     return totalCount;
   }
 
-  //  검색 조건에 맞는 게시물 목록 반환
+  //  검색 조건에 맞는 게시물 목록 반환(페이징 x)
   public List<BoardDTO> selectList(Map<String, Object> map) {
     List<BoardDTO> bbs = new Vector<BoardDTO>();
 
@@ -88,15 +88,15 @@ public class BoardDAO extends JDBConnect {
   public BoardDTO selectView(String num) {
     BoardDTO dto = new BoardDTO();
     String query = "SELECT member.name, board.* ";
-    query +="FROM jspmember2 as member join jspboard2 as board ";
-    query +="ON member.id = board.id WHERE num=? ";
+    query += "FROM jspmember2 as member join jspboard2 as board ";
+    query += "ON member.id = board.id WHERE num=? ";
 
-    try{
+    try {
       pstmt = con.prepareStatement(query);
       pstmt.setString(1, num);
       rs = pstmt.executeQuery();
 
-      if(rs.next()){
+      if (rs.next()) {
         dto.setNum(rs.getString("num"));
         dto.setTitle(rs.getString("title"));
         dto.setContent(rs.getString("content"));
@@ -105,66 +105,98 @@ public class BoardDAO extends JDBConnect {
         dto.setVisitcount(rs.getString("visitcount"));
         dto.setName(rs.getString("name"));
       }
-    }
-    catch(Exception e){
+    } catch (Exception e) {
       System.out.println("게시물 상세보기 중 오류 발생");
       System.out.println(e.getMessage());
     }
     return dto;
   }
 
-//  조회수 증가
-  public void updateVisitCount(String num){
+  //  조회수 증가
+  public void updateVisitCount(String num) {
     String query = "UPDATE jspboard2 SET ";
     query += "visitcount = visitcount+1 ";
     query += "WHERE num = ? ";
 
-    try{
+    try {
       pstmt = con.prepareStatement(query);
       pstmt.setString(1, num);
       pstmt.executeUpdate();
-    }
-    catch(Exception e){
+    } catch (Exception e) {
       System.out.println("조회수 증가 중 오류 발생");
       System.out.println(e.getMessage());
     }
   }
 
-//  지정한 게시물 수정
-  public int updateEdit(BoardDTO dto){
-    int result=0;
-    try{
+  //  지정한 게시물 수정
+  public int updateEdit(BoardDTO dto) {
+    int result = 0;
+    try {
       String query = "UPDATE jspboard2 SET ";
-      query+="title =?, content=? ";
-      query+="WHERE num=? ";
+      query += "title =?, content=? ";
+      query += "WHERE num=? ";
 
-      pstmt=con.prepareStatement(query);
-      pstmt.setString(1,dto.getTitle());
-      pstmt.setString(2,dto.getContent());
-      pstmt.setString(3,dto.getNum());
+      pstmt = con.prepareStatement(query);
+      pstmt.setString(1, dto.getTitle());
+      pstmt.setString(2, dto.getContent());
+      pstmt.setString(3, dto.getNum());
 
-      result=pstmt.executeUpdate();
-    }
-    catch(Exception e){
+      result = pstmt.executeUpdate();
+    } catch (Exception e) {
       System.out.println("게시물 수정 중 오류 발생");
       System.out.println(e.getMessage());
     }
     return result;
   }
 
-//  지정한 게시물 삭제
-  public int deletePost(BoardDTO dto){
-    int result=0;
-    try{
+  //  지정한 게시물 삭제
+  public int deletePost(BoardDTO dto) {
+    int result = 0;
+    try {
       String query = "DELETE FROM jspboard2 WHERE num=? ";
       pstmt = con.prepareStatement(query);
-      pstmt.setString(1,dto.getNum());
+      pstmt.setString(1, dto.getNum());
       result = pstmt.executeUpdate();
-    }
-    catch(Exception e){
+    } catch (Exception e) {
       System.out.println("게시물 삭제 중 오류 발생");
       System.out.println(e.getMessage());
     }
     return result;
+  }
+
+  //  페이징
+  public List<BoardDTO> selectListPage(Map<String, Object> map) {
+    List<BoardDTO> bbs = new Vector<BoardDTO>();
+
+    String query = "SELECT num, title, content, id, postdate, visitcount ";
+    query += "FROM jspboard2 ";
+    if (map.get("searchWord") != null) {
+      query += "WHERE " + map.get("searchField") + " ";
+      query += "LIKE '%" + map.get("searchWord").toString() + "%' ";
+    }
+    query += "ORDER BY num DESC ";
+    query += "LIMIT ? OFFSET ? ";
+
+    try {
+      pstmt = con.prepareStatement(query);
+      pstmt.setInt(1, Integer.parseInt(map.get("start").toString()));
+      pstmt.setInt(2, Integer.parseInt(map.get("end").toString()));
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        BoardDTO dto = new BoardDTO();
+        dto.setNum(rs.getString("num"));
+        dto.setTitle(rs.getString("title"));
+        dto.setContent(rs.getString("content"));
+        dto.setPostdate(rs.getDate("postdate"));
+        dto.setId(rs.getString("id"));
+        dto.setVisitcount(rs.getString("visitcount"));
+        bbs.add(dto);
+      }
+    } catch (Exception e) {
+      System.out.println("페이징 게시물 조회 중 오류 발생");
+      System.out.println(e.getMessage());
+    }
+    return bbs;
   }
 }

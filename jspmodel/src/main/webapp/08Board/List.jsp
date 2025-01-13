@@ -2,6 +2,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="asdf.BoardDAO" %>
 <%@ page import="asdf.BoardDTO" %>
+<%@ page import="asdf.BoardPage" %>
 <%
   BoardDAO dao = new BoardDAO(application);
 
@@ -15,7 +16,36 @@
 
   dao.dbOpen();
   int totalCount = dao.selectCount(param);
-  List<BoardDTO> boardLists = dao.selectList(param);
+
+//  **페이지 처리 시작**
+//  전체 페이지 수
+  int pageNum = 1;
+  int pageSize = Integer.parseInt(application.getInitParameter("POSTS_PER_PAGE"));
+  int blockPage = Integer.parseInt(application.getInitParameter("PAGES_PER_BLOCK"));
+  int totalPage = (int) Math.ceil((double) totalCount / pageSize);
+
+//  현재 페이지 확인
+  String pageTemp = request.getParameter("pageNum");
+  if (pageTemp != null && !pageTemp.equals(""))
+    pageNum = Integer.parseInt(pageTemp);
+
+//  목록에 출력할 게시물 범위 계산
+  int start = (pageNum - 1) * blockPage + 1;
+  int end = start + blockPage - 1;
+  param.put("start", start);
+  param.put("end", end);
+//  **페이치 처리 끝**
+
+/*
+  int offset = (currentPageNum - 1) * itemPerPage;
+  int totalItems = 0; // 전체 게시물 수
+  int totalPages = 0; // 전체 페이지 수
+  int currentBlock = (currentPageNum - 1) / blockSize + 1; // 현재 블럭
+  int startPage = (currentBlock - 1) * blockSize + 1; // 현재 블럭 시작 페이지
+  int endPage = startPage + blockSize - 1; // 현재 블럭 마지막 페이지
+*/
+
+  List<BoardDTO> boardLists = dao.selectListPage(param);
   dao.close();
 %>
 <!DOCTYPE html>
@@ -40,17 +70,18 @@
       }
   </style>
   <script>
-    $(document).ready(function(){
-        $(".write").on("click",function(){
-            location.href = "Write.jsp";
-        });
-    });
+      $(document).ready(function () {
+          $(".write").on("click", function () {
+              location.href = "Write.jsp";
+          });
+      });
   </script>
 </head>
 <body>
 <jsp:include page="../Common/Link.jsp"></jsp:include>
 
-<h2>목록 보기(List)</h2>
+<h2>목록 보기(List) - 현재 페이지 : <%=pageNum%> (전체 : <%=totalPage%>
+</h2>
 
 <%--검색용--%>
 <form method="get">
@@ -92,8 +123,11 @@
   <%
   } else {
     int virtualNum = 0;
+    int countNum = 0;
+
     for (BoardDTO dto : boardLists) {
-      virtualNum = totalCount--;
+//      virtualNum = totalCount--;
+      virtualNum = totalCount - (((pageNum - 1) + pageSize) + countNum++);
   %>
   <tr style="text-align: center;">
     <td>
@@ -118,6 +152,11 @@
 <%--목록 하단의 글쓰기 버튼--%>
 <table style="border: 1px; width: 90%;">
   <tr style="text-align: center">
+    <%--    페이징--%>
+    <td>
+      <%=BoardPage.pagingStr(totalCount, pageSize, blockPage, pageNum, request.getRequestURI())%>
+    </td>
+    <%--    글쓰기--%>
     <td>
       <button type="button" class="write">글쓰기</button>
     </td>
