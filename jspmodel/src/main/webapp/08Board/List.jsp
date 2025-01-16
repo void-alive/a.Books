@@ -34,16 +34,8 @@
   int end = start + blockPage - 1;
   param.put("start", start);
   param.put("end", end);
-//  **페이치 처리 끝**
 
-/*
-  int offset = (currentPageNum - 1) * itemPerPage;
-  int totalItems = 0; // 전체 게시물 수
-  int totalPages = 0; // 전체 페이지 수
-  int currentBlock = (currentPageNum - 1) / blockSize + 1; // 현재 블럭
-  int startPage = (currentBlock - 1) * blockSize + 1; // 현재 블럭 시작 페이지
-  int endPage = startPage + blockSize - 1; // 현재 블럭 마지막 페이지
-*/
+//  **페이치 처리 끝**
 
   List<BoardDTO> boardLists = dao.selectListPage(param);
   dao.close();
