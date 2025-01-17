@@ -1,0 +1,9 @@
+asdf
+second
+third - mybranch
+fourth - mybranch
+<<<<<<< HEAD
+some hot fix 
+=======
+기능 1 추가 
+>>>>>>> baf5ae9 (feature1)
