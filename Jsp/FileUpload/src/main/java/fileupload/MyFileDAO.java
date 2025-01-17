@@ -1,5 +1,9 @@
 package fileupload;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyFileDAO extends JDBConnect {
   public MyFileDAO() {
     super();
@@ -22,5 +26,31 @@ public class MyFileDAO extends JDBConnect {
       System.out.println(e.getMessage());
     }
     return applyResult;
+  }
+
+  public List<MyFileDTO> myFileList() {
+    List<MyFileDTO> fileList = new ArrayList<MyFileDTO>();
+
+    String query = "SELECT * FROM jspboardfile ORDER BY idx DESC";
+    try{
+      stmt = con.createStatement();
+      rs = stmt.executeQuery(query);
+
+      while(rs.next()){
+        MyFileDTO dto = new MyFileDTO();
+        dto.setIdx(rs.getString("idx"));
+        dto.setTitle(rs.getString("title"));
+        dto.setCate(rs.getString("cate"));
+        dto.setOfile(rs.getString("ofile"));
+        dto.setSfile(rs.getString("sfile"));
+        dto.setPostdate(rs.getString("postdate"));
+        fileList.add(dto);
+      }
+    }
+    catch(Exception e){
+      System.out.println("select 시 예외 발생");
+      System.out.println(e.getMessage());
+    }
+    return fileList;
   }
 }
