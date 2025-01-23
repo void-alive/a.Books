@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -55,5 +56,11 @@ class TestRepositoryTests {
   public void testPaging(){
     Pageable pageable = PageRequest.of(0,10, Sort.by("bno").descending());
     Page<com.example.test3.domain.Test> result = testRepository.findAll(pageable);
+    log.info("total count : " + result.getTotalElements());
+    log.info("total page : " + result.getTotalPages());
+    log.info("page number : " + result.getNumber());
+    log.info("page size : " + result.getSize());
+
+    List<com.example.test3.domain.Test> todoList = result.getContent();
   }
 }
