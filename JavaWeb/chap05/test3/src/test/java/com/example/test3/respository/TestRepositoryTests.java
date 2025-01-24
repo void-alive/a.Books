@@ -52,7 +52,7 @@ class TestRepositoryTests {
     testRepository.deleteById(bno);
   }*/
 
-  @Test
+/*  @Test
   public void testPaging(){
     Pageable pageable = PageRequest.of(0,10, Sort.by("bno").descending());
     Page<com.example.test3.domain.Test> result = testRepository.findAll(pageable);
@@ -62,5 +62,25 @@ class TestRepositoryTests {
     log.info("page size : " + result.getSize());
 
     List<com.example.test3.domain.Test> todoList = result.getContent();
+  }*/
+
+/*  @Test
+  public void testSearch1() {
+    Pageable pageable = PageRequest.of(1, 10, Sort.by("bno").descending());
+    testRepository.search1(pageable);
+  }*/
+
+  @Test
+  public void testSearchAll() {
+    String[] types = {"t", "c", "w"};
+    String keyword = "1";
+    Pageable pageable = PageRequest.of(0, 10);
+    Page<com.example.test3.domain.Test> result = testRepository.searchAll(types, keyword, pageable);
+
+    log.info(result.toString());
+    log.info(result.getSize());
+    log.info(result.getNumber());
+    log.info(result.hasPrevious() + " : " + result.hasNext());
+    result.getContent().forEach(test -> log.info(test.toString()));
   }
 }
