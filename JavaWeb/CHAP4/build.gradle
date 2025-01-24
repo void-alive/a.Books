@@ -40,6 +40,7 @@ dependencies {
 //  lombok
   testCompileOnly 'org.projectlombok:lombok'
   testAnnotationProcessor 'org.projectlombok:lombok'
+
 //  maven
 //  spring core
   // https://mvnrepository.com/artifact/org.springframework/spring-core
@@ -48,13 +49,16 @@ dependencies {
   implementation group: 'org.springframework', name: 'spring-context', version: '6.2.2'
 // https://mvnrepository.com/artifact/org.springframework/spring-test
   testImplementation group: 'org.springframework', name: 'spring-test', version: '6.2.2'
+  // https://mvnrepository.com/artifact/org.springframework/spring-webmvc
+  implementation group: 'org.springframework', name: 'spring-webmvc', version: '6.2.2'
+
 //  log4jcore
-// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+/*// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
   implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '3.0.0-beta3'
 // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '3.0.0-beta2'
 // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl
-  testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: '3.0.0-beta2'
+  testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: '3.0.0-beta2'*/
 //  jstl
   // https://mvnrepository.com/artifact/jakarta.servlet.jsp.jstl/jakarta.servlet.jsp.jstl-api
   implementation group: 'jakarta.servlet.jsp.jstl', name: 'jakarta.servlet.jsp.jstl-api', version: '3.0.2'
