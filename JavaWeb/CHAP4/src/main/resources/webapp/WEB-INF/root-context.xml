@@ -27,12 +27,10 @@
   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
     <property name="mapperLocations" value="classpath:/mappers/*.xml"/>
-
-<!--    <property name="mapperLocations" value="classpath:/mappers/**/*.xml"/>-->
   </bean>
 
-  <mybatis:scan base-package="com.example.chap4.mapper"/>
+  <mybatis:scan base-package="com.example.chap4.mapper"></mybatis:scan>
 
-<!--  <context:component-scan base-package="com.example.chap4.config"/>-->
-<!--  <context:component-scan base-package="org.zerock.springex.service"/>-->
+  <context:component-scan base-package="com.example.chap4.config"/>
+  <context:component-scan base-package="com.example.chap4.service"/>
 </beans>
