@@ -1,6 +1,7 @@
 package com.example.chap4.controller;
 
 import com.example.chap4.dto.PageRequestDTO;
+import com.example.chap4.dto.PageResponseDTO;
 import com.example.chap4.dto.TodoDTO;
 import com.example.chap4.service.TodoService;
 import jakarta.validation.Valid;
@@ -25,10 +26,15 @@ public class TodoController {
   @RequestMapping("/list")
   public void list(@Valid PageRequestDTO pageRequestDTO, BindingResult bindingResult, Model model){
     System.out.println(pageRequestDTO);
-    if(bindingResult.hasErrors()){
+    if(!bindingResult.hasErrors()){
       pageRequestDTO = PageRequestDTO.builder().build();
     }
-    model.addAttribute("responseDTO", todoService.getList(pageRequestDTO));
+
+    PageResponseDTO res = todoService.getList(pageRequestDTO);
+
+    model.addAttribute("responseDTO", res);
+
+//    model.addAttribute("responseDTO", todoService.getList(pageRequestDTO));
   }
 
   @GetMapping("/register")

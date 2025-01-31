@@ -44,7 +44,7 @@
     select *
     from testfull503db.tbl_todo
     order by tno desc
-    limit #{skip},#{size}
+    limit #{page},#{size}
   </select>
 
   <select id="getCount" resultType="int">

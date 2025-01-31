@@ -24,7 +24,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="dto : ${dtoList}">
+    <tr th:each="dto : ${responseDTO.dtoList}">
       <th scope="row" th:text="${dto.tno}"></th>
       <td><a href="#" th:href="@{|/todo/read?tno=${dto.tno}|}" th:text="${dto.title}"></a></td>
       <td th:text="${dto.writer}"></td>
@@ -34,8 +34,8 @@
     </tbody>
   </table>
   <div class="float-end">
-    <ul class="pagination flex-wrap">
-
+    <ul class="pagination flex-wrap" th:each="begin : ${responseDTO.start}">
+      <li class="page-item"><a class="page-link" href="#" th:text="${num}"></a></li>
     </ul>
   </div>
 </div>
