@@ -19,7 +19,7 @@
         <property name="formatters">
             <set>
                 <bean class="com.example.chap4.controller.formatter.LocalDateFormatter"/>
-<!--                <bean class="com.example.chap4.controller.formatter.CheckboxFormatter"/>-->
+                <bean class="com.example.chap4.controller.formatter.CheckboxFormatter"/>
             </set>
         </property>
     </bean>

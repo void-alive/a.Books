@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:>
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -24,15 +24,20 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="items : ${dtoList}">
-      <th scope="row" th:value="${dto.tno}"></th>
-      <td th:value="${dto.title}"></td>
-      <td th:value="${dto.writer}"></td>
-      <td th:value="${dto.dueDate}"></td>
-      <td th:value="${dto.finished}"></td>
+    <tr th:each="dto : ${dtoList}">
+      <th scope="row" th:text="${dto.tno}"></th>
+      <td><a href="#" th:href="@{|/todo/read?tno=${dto.tno}|}" th:text="${dto.title}"></a></td>
+      <td th:text="${dto.writer}"></td>
+      <td th:text="${dto.dueDate}"></td>
+      <td th:text="${dto.finished}"></td>
     </tr>
     </tbody>
   </table>
+  <div class="float-end">
+    <ul class="pagination flex-wrap">
+
+    </ul>
+  </div>
 </div>
 </body>
 </html>

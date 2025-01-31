@@ -1,6 +1,8 @@
 package com.example.chap4.service;
 
 import com.example.chap4.domain.TodoVO;
+import com.example.chap4.dto.PageRequestDTO;
+import com.example.chap4.dto.PageResponseDTO;
 import com.example.chap4.dto.TodoDTO;
 import com.example.chap4.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +29,38 @@ public class TodoServiceImpl implements TodoService{
   }
 
   @Override
-  public List<TodoDTO> getAll(){
-    List<TodoDTO> dtoList=todoMapper.selectAll().stream()
-            .map(vo -> modelMapper.map(vo,TodoDTO.class))
+  public PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO) {
+    List<TodoVO> voList = todoMapper.selectList(pageRequestDTO);
+    List<TodoDTO> dtoList = voList.stream()
+            .map(vo -> modelMapper.map(vo, TodoDTO.class))
             .collect(Collectors.toList());
 
-    return dtoList;
+    int total = todoMapper.getCount(pageRequestDTO);
+
+    PageResponseDTO<TodoDTO> pageResponseDTO = PageResponseDTO.<TodoDTO>withAll()
+            .dtoList(dtoList)
+            .total(total)
+            .pageRequestDTO(pageRequestDTO)
+            .build();
+
+    return pageResponseDTO;
+  }
+
+  @Override
+  public TodoDTO getOne(Long tno) {
+    TodoVO todoVO = todoMapper.selectOne(tno);
+    TodoDTO todoDTO = modelMapper.map(todoVO, TodoDTO.class);
+    return todoDTO;
+  }
+
+  @Override
+  public void remove(Long tno) {
+    todoMapper.delete(tno);
+  }
+
+  @Override
+  public void modify(TodoDTO todoDTO) {
+    TodoVO todoVO = modelMapper.map(todoDTO, TodoVO.class);
+    todoMapper.update(todoVO);
   }
 }

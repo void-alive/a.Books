@@ -9,10 +9,45 @@
   </select>
 
   <insert id="insert">
-    insert into testfull503db.tbl_todo (title,dueDate,writer) values (#{title},#{dueDate},#{writer})
+    insert into testfull503db.tbl_todo (title, dueDate, writer)
+    values (#{title}, #{dueDate}, #{writer})
   </insert>
 
   <select id="selectAll" resultType="com.example.chap4.domain.TodoVO">
-    select * from testfull503db.tbl_todo order by tno desc
+    select *
+    from testfull503db.tbl_todo
+    order by tno desc
+  </select>
+
+  <select id="selectOne" resultType="com.example.chap4.domain.TodoVO">
+    select *
+    from testfull503db.tbl_todo
+    where tno = #{tno}
+  </select>
+
+  <delete id="delete">
+    delete
+    from testfull503db.tbl_todo
+    where tno = #{tno}
+  </delete>
+
+  <update id="update">
+    update testfull503db.tbl_todo
+    set title=#{title},
+        dueDate=#{dueDate},
+        finished=#{finished},
+        writer=#{writer}
+    where tno = #{tno}
+  </update>
+
+  <select id="selectList" resultType="com.example.chap4.domain.TodoVO">
+    select *
+    from testfull503db.tbl_todo
+    order by tno desc
+    limit #{skip},#{size}
+  </select>
+
+  <select id="getCount" resultType="int">
+    select count(tno) from testfull503db.tbl_todo
   </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.example.chap4.controller;
 
+import com.example.chap4.dto.PageRequestDTO;
 import com.example.chap4.dto.TodoDTO;
 import com.example.chap4.service.TodoService;
 import jakarta.validation.Valid;
@@ -22,23 +23,26 @@ public class TodoController {
   private final TodoService todoService;
 
   @RequestMapping("/list")
-  public void list(Model model){
-    log.info("todo list");
-    model.addAttribute("dtoList", todoService.getAll());
+  public void list(@Valid PageRequestDTO pageRequestDTO, BindingResult bindingResult, Model model){
+    System.out.println(pageRequestDTO);
+    if(bindingResult.hasErrors()){
+      pageRequestDTO = PageRequestDTO.builder().build();
+    }
+    model.addAttribute("responseDTO", todoService.getList(pageRequestDTO));
   }
 
   @GetMapping("/register")
-  public void registerGET(){
+  public void registerGET() {
     System.out.println("Get todo register");
   }
 
   @PostMapping("/register")
   public String registerPost(@Valid TodoDTO todoDTO,
                              BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes){
+                             RedirectAttributes redirectAttributes) {
     System.out.println("Post todo register");
 
-    if(bindingResult.hasErrors()){
+    if (bindingResult.hasErrors()) {
       System.out.println("error");
       redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
       return "redirect:/todo/register";
@@ -46,6 +50,37 @@ public class TodoController {
 
     System.out.println(todoDTO);
     todoService.register(todoDTO);
+    return "redirect:/todo/list";
+  }
+
+  @GetMapping({"/read", "/modify"})
+  public void read(Long tno, Model model) {
+    TodoDTO todoDTO = todoService.getOne(tno);
+    System.out.println(todoDTO);
+    model.addAttribute("dto", todoDTO);
+  }
+
+  @PostMapping("/remove")
+  public String remove(Long tno, RedirectAttributes redirectAttributes) {
+    System.out.println("--------remove--------");
+    System.out.println("tno : " + tno);
+    todoService.remove(tno);
+    return "redirect:/todo/list";
+  }
+
+  @PostMapping("/modify")
+  public String modify(@Valid TodoDTO todoDTO,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes) {
+
+    if (bindingResult.hasErrors()) {
+      System.out.println("error");
+      redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+      redirectAttributes.addAttribute("tno", todoDTO.getTno());
+    }
+
+    System.out.println(todoDTO);
+    todoService.modify(todoDTO);
     return "redirect:/todo/list";
   }
 }
