@@ -16,7 +16,7 @@
               self.location = "/todo/modify?tno="+$("#tno").val();
           });
           $("#list").on("click", function () {
-              self.location = "/todo/list";
+              self.location = "/todo/list?" + $("#list").val();
           });
       });
   </script>
