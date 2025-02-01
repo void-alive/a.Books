@@ -52,8 +52,7 @@
     from testfull503db.tbl_todo
   </select>
 
-  <select id="selectList" resultType="com.example.chap4.domain.TodoVO">
-    select * from testfull503db.tbl_todo
+  <sql id="search">
     <where>
       <if test="types !=null and types.length>0">
         <foreach collection="types" item="type" open="(" close=")" separator=" or ">
@@ -76,7 +75,23 @@
         </trim>
       </if>
 
+      <if test="from != null and to != null">
+        <trim prefix="and">
+          dueDate between #{from} and #{to}
+        </trim>
+      </if>
     </where>
+  </sql>
+
+  <select id="selectList" resultType="com.example.chap4.domain.TodoVO">
+    select * from tbl_todo
+    <include refid="search"></include>
     order by tno desc limit #{skip},#{size}
+
+  </select>
+
+  <select id="getCount" resultType="int">
+    select count(tno) from tbl_todo
+    <include refid="search"></include>
   </select>
 </mapper>
