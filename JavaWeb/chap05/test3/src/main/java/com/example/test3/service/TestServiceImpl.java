@@ -59,7 +59,7 @@ public class TestServiceImpl implements TestService {
     String keyword = pageRequestDTO.getKeyword();
     Pageable pageable = pageRequestDTO.getPageable("bno");
 
-    Page<Test> result = testRepository.searchAll(types, keyword, pageable);
+    Page<Test> result = testRepository.search1(pageable);
 
     List<TestDTO> dtoList = result.getContent().stream()
             .map(test -> modelMapper.map(test,TestDTO.class)).collect(Collectors.toList());

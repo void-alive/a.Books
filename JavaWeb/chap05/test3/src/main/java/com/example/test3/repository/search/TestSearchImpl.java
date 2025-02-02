@@ -32,13 +32,17 @@ public class TestSearchImpl extends QuerydslRepositorySupport implements TestSea
 
   @Override
   public Page<Test> searchAll(String[] types, String keyword, Pageable pageable) {
+
     QTest test = QTest.test;
     JPQLQuery<Test> query = from(test);
 
-    if ((types != null && types.length > 0) && keyword != null) {
-      BooleanBuilder booleanBuilder = new BooleanBuilder();
-      for (String type : types) {
-        switch (type) {
+    if( (types != null && types.length > 0) && keyword != null ){ //검색 조건과 키워드가 있다면
+
+      BooleanBuilder booleanBuilder = new BooleanBuilder(); // (
+
+      for(String type: types){
+
+        switch (type){
           case "t":
             booleanBuilder.or(test.title.contains(keyword));
             break;
@@ -49,15 +53,21 @@ public class TestSearchImpl extends QuerydslRepositorySupport implements TestSea
             booleanBuilder.or(test.writer.contains(keyword));
             break;
         }
-      }
+      }//end for
       query.where(booleanBuilder);
-    }
+    }//end if
+
+    //bno > 0
     query.where(test.bno.gt(0L));
 
-//    paging
+    //paging
     this.getQuerydsl().applyPagination(pageable, query);
+
     List<Test> list = query.fetch();
+
     long count = query.fetchCount();
+
     return new PageImpl<>(list, pageable, count);
+
   }
 }
